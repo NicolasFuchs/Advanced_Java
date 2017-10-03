@@ -1,6 +1,8 @@
 /**
  * File    : TCPClientGUI.java
- * Author  : R. Scheurer (HEIA-FR)
+ * Authors: R. Scheurer (HEIA-FR) (Initial Author)
+ *          Nicolas Fuchs
+ *          Jigé Pont
  * Version : v1.17 / 25.09.2017
  * 
  * Description - a very simple GUI for a simple TCP client
