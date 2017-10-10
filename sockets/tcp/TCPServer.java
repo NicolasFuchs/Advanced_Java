@@ -39,9 +39,11 @@ public class TCPServer {
     while(isRunning) {
       try {
         so = ss.accept();
-        st = new TCPServerThread(instance, so, id);
-        st.run();
         log("New connection request from (" + so.getInetAddress().getHostAddress() + ":" + so.getPort() + ")");
+        
+        st = new TCPServerThread(instance, so, id);
+        st.start();
+        
         id++;
       } catch (IOException e) {
         e.printStackTrace();
