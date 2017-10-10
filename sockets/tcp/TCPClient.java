@@ -15,22 +15,21 @@ import java.io.*;
 
 public class TCPClient {
 
-  private Socket s;
-  private ObjectOutputStream oos;
-  private PrintWriter out;
-  
-  public TCPClient(InetSocketAddress isa) throws IOException {
-    s = new Socket(isa.getAddress(), isa.getPort());
-    out = new PrintWriter(s.getOutputStream(), false);
-  }
-  
-  public void sendMsg(String msg) {
-    out.println(msg);
-    out.flush();
-  }
-  
-  public void closeSocket() {
-    
-  }
+    private Socket s;
+    private ObjectOutputStream oos;
+
+    public TCPClient(InetSocketAddress isa) throws IOException {
+        s = new Socket(isa.getAddress(), isa.getPort());
+        oos = new ObjectOutputStream(s.getOutputStream());
+    }
+
+    public void sendMsg(String msg) throws IOException {
+        oos.writeObject(msg);
+    }
+
+    public void closeSocket() throws IOException {
+        oos.close();
+        s.close();
+    }
 
 }
