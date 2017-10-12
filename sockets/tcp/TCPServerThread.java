@@ -17,29 +17,29 @@ import java.net.Socket;
 
 public class TCPServerThread extends Thread {
 
-  private TCPServer ts;
-  private Socket so;
-  private Integer id;
-  private ObjectInputStream ois;
+  private TCPServer ts;				// Reference to server
+  private Socket so;				// Refrence to socket
+  private Integer id;				// Identifier 
+  private ObjectInputStream ois;	// To receive serialized objects from client
   
   @Override
   public void run() {
 	Object o;
     try {
     	while ((o = ois.readObject()) != null) {
-    		
     		if(o instanceof String){
     			ts.log(so, id, (String)o);
     		}else if (o instanceof Integer){
     			ts.log(so, id, ((Integer)o).toString());
+    		}else if (o instanceof MyMessage){
+    			MyMessage m = (MyMessage)o;
+    			ts.log(so, id, "MsgNum= " + m.getMsgNumber() + ", Msg= " + m.getMsg() );
     		}else{
     			ts.log(so, id, "Unknown received Object !");
     		}
-    	}
-      
+    	}    
     } catch (EOFException e) {
     	ts.log(so, id, "Client disconnected: " + e.getClass().getName());
-    	
     	try {
 			so.close();
 		} catch (IOException e1) {

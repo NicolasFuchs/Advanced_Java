@@ -24,7 +24,9 @@ public class TCPClient {
     }
 
     public void sendMsg(String msg) throws IOException {
-        oos.writeObject(msg);
+    	MyMessage m = new MyMessage(msg);
+    	oos.writeObject(m);
+        //oos.writeObject(msg);
     }
 
     public void closeSocket() throws IOException {

@@ -15,47 +15,71 @@ import java.io.*;
 
 public class TCPServer {
 
-  private static TCPServer instance = null;                 // Instance of Server
-  private static boolean isRunning = true;                  // Variable to stop ServerSocket
-  private static final int SERVER_PORT = 7676;              // Server port to use
-  private static Integer id = 0;                            // Client id
-  private static ServerSocket ss;                           // ServerSocket to accept connections
+  private boolean isRunning = true;             // Variable to stop ServerSocket (for future improvement of program)
+  private static int serverPort = 7676;			// Server port to use by default
+  private static int serverPortMax = 7686;		// Server port maximum (serverPortMax - serverPort = max instances of server) 
+  private int serverId;							// identifier for one server
+  private Integer id = 0;                		// Client id
+  private ServerSocket ss;               		// ServerSocket to accept connections
 
   public static void main(String[] args) {
+	  if(serverPort < serverPortMax) {
+		  new TCPServer();
+	  }else {
+		  System.out.println("Max number of  TCPServer or max range of ports reached, program exit");
+	  }	  
+  }
+  
+  private TCPServer() {
+	  this.serverId = serverPort++;
+	  this.createAndLaunch();
+  }
+    
+  private void createAndLaunch() {
+	  try {
+		  ss = new ServerSocket(serverId);
+	  } catch (IOException e) {
+		  if(serverPort < serverPortMax) {
+			  log("Création du serveur sur port ("+serverId+") impossible, tentative sur port ("+(serverPort+1)+")");
+			  this.serverId = serverPort++;
+			  this.createAndLaunch();
+		  }else {
+			  log("Max number of TCPServer or max range of ports reached, program exit");
+		  }		  
+	  }
+	  
+	  // only if instantiation of ServerSocket is a success
+	  if(ss instanceof ServerSocket) {
+		  log("Listening on TCP Port " + serverId + " ...");
+		  while(isRunning) {
+		      try {
+				  TCPServerThread st;
+				  Socket so;
+				  so = ss.accept();
+				  
+				  log("New connection request from (" + so.getInetAddress().getHostAddress() + ":" + so.getPort() + ")");
+		        
+				  st = new TCPServerThread(this, so, id);
+				  st.start();
+		        
+				  id++;
+		      } catch (IOException e) {
+		    	  e.printStackTrace();
+		      }
+		  }
+	  }
+  }
+  
+  public void log(Socket so, Integer id, String msg) {
+    log("Client(" + id + ") from (" + so.getInetAddress().getHostAddress() + ":" + so.getPort() + ") : " + msg);
+  }
+  
+  public void log(String msg) {
     try {
-      instance = new TCPServer();
-      ss = new ServerSocket(SERVER_PORT);
-      launch();
-    } catch (IOException e) {
-      System.out.println("Création du serveur impossible.");
-      e.printStackTrace();
-    }
-  }
-  
-  private static void launch() {
-    TCPServerThread st;
-    Socket so;
-    log("Listening on TCP Port " + SERVER_PORT + " ...");
-    while(isRunning) {
-      try {
-        so = ss.accept();
-        log("New connection request from (" + so.getInetAddress().getHostAddress() + ":" + so.getPort() + ")");
-        
-        st = new TCPServerThread(instance, so, id);
-        st.start();
-        
-        id++;
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-  }
-  
-  public static void log(Socket so, Integer id, String msg) {
-    System.out.println("Client(" + id + ") from (" + so.getInetAddress().getHostAddress() + ":" + so.getPort() + ") : " + msg);
-  }
-  
-  public static void log(String msg) {
-    System.out.println(msg);
+		System.out.println("Server("+InetAddress.getLocalHost().getHostAddress()+":"+serverId+"): "+msg);
+	} catch (UnknownHostException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
   }
 }
