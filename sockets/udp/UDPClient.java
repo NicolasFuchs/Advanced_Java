@@ -8,10 +8,15 @@
  */
 package sockets.udp;
 
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
 import java.net.*;
+
+import sockets.tcp.MyMessage;
 
 public class UDPClient {
 
+  private static int MAX_OBJECT_SIZE=6400;		// Max size in byte for java object send in DatagramPacket
   private static int clientPort = 6767;			// Client port to use by default
   private static int clientPortMax = 6769;		// Client port maximum (clientPortMax - clientPort = max instances of client)
   private int clientId;							// Identifier for one client (port number effective)
@@ -38,12 +43,22 @@ public class UDPClient {
   }
     
   public void sendMsg(InetSocketAddress isa, String msg) throws Exception {
+	  MyMessage m = new MyMessage(msg);
+	  ByteArrayOutputStream baos = new ByteArrayOutputStream(MAX_OBJECT_SIZE);
+	  ObjectOutputStream oos = new ObjectOutputStream(baos);
+	  oos.writeObject(m);
+	  byte[] data = baos.toByteArray();
+
+	  dp = new DatagramPacket(data, data.length, isa.getAddress(), isa.getPort());
+	  
+	  
+	  /*
 	  dp = new DatagramPacket(
 			  msg.getBytes(), 		// data buffer (of type byte[])
 			  msg.length(), 		// size of data buffer
 			  isa.getAddress(), 	// destination address
 			  isa.getPort()); 		// integer
-
+*/
 	  // send
 	  ds.send(dp);
   }
