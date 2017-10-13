@@ -8,11 +8,12 @@
  */
 package sockets.udp;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.*;
 
-import sockets.tcp.TCPServer;
-import sockets.tcp.TCPServerThread;
+import sockets.tcp.MyMessage;
 
 public class UDPServer {
 
@@ -62,11 +63,31 @@ public class UDPServer {
 	    		  // receiving (blocking)
 	    		  ds.receive(dp);
 	    		  
+	    		  int len = dp.getLength();
+	    		  byte[] b = new byte[len];
+	    		  for(int i=0 ; i<len ; i++) {
+	    			  b[i] = buffer[i];
+	    		  }
+	    		  	    		  
+	    		  ByteArrayInputStream baos = new ByteArrayInputStream(b);
+	    	      ObjectInputStream oos = new ObjectInputStream(baos);
+	    	      try {
+	    	    	  MyMessage m = (MyMessage)oos.readObject();
+	    	    	  log(dp, m.getMsg());
+	    	      } catch (ClassNotFoundException e) {
+	    	    	  // TODO Auto-generated catch block
+	    	    	  e.printStackTrace();
+	    	      }
+	    		    
+	    	   
+	    		  
+	    		  /*
 	    		  // Cast buffer in String
 	    		  String msg = new String( buffer, 0, dp.getLength());
 	    		  
 	    		  // Console output
 	    		  log(dp, msg);
+	    		  */
 	    	  } catch (IOException e) {
 	    		  e.printStackTrace();
 	    	  }
