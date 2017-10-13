@@ -15,10 +15,10 @@ import java.io.*;
 
 public class TCPServer {
 
-  private boolean isRunning = true;             // Variable to stop ServerSocket (for future improvement of program)
+  private boolean isRunning = true;             // Variable to stop ServerSocket (for future improvement of this program)
   private static int serverPort = 7676;			// Server port to use by default
   private static int serverPortMax = 7686;		// Server port maximum (serverPortMax - serverPort = max instances of server) 
-  private int serverId;							// identifier for one server
+  private int serverId;							// Identifier for one server
   private Integer id = 0;                		// Client id
   private ServerSocket ss;               		// ServerSocket to accept connections
 
@@ -40,7 +40,7 @@ public class TCPServer {
 		  ss = new ServerSocket(serverId);
 	  } catch (IOException e) {
 		  if(serverPort < serverPortMax) {
-			  log("Création du serveur sur port ("+serverId+") impossible, tentative sur port ("+(serverPort+1)+")");
+			  log("Création du serveur sur port ("+serverId+") impossible, tentative sur port ("+(serverPort)+")");
 			  this.serverId = serverPort++;
 			  this.createAndLaunch();
 		  }else {
@@ -48,7 +48,7 @@ public class TCPServer {
 		  }		  
 	  }
 	  
-	  // only if instantiation of ServerSocket is a success
+	  // only if instantiation of ServerSocket was a success
 	  if(ss instanceof ServerSocket) {
 		  log("Listening on TCP Port " + serverId + " ...");
 		  while(isRunning) {

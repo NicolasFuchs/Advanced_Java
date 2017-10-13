@@ -4,7 +4,8 @@
  *          Jigé Pont
  * Date   : 25.09.2017
  * 
- * Description - a simple MyMessage for TCP
+ * Description : a simple MyMessage Template object for TCP
+ * 				 MyMessage is Thread Safe
  *
  */
 package sockets.tcp;
