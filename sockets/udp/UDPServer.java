@@ -17,12 +17,13 @@ import sockets.tcp.MyMessage;
 
 public class UDPServer {
 
+  private static final int MAX_OBJECT_SIZE=6400;	// Max size in byte for java object send in DatagramPacket
   static final int MAX_SIZE = 100;
-  private boolean isRunning = true;             // Variable to stop Server (for future improvement of this program)
-  private static int serverPort = 6767;			// Server port to use by default
-  private static int serverPortMax = 6776;		// Server port maximum (serverPortMax - serverPort = max instances of server) 
-  private int serverId;							// Identifier for one server
-  private DatagramSocket ds;					// Entry point
+  private boolean isRunning = true;             	// Variable to stop Server (for future improvement of this program)
+  private static int serverPort = 6767;				// Server port to use by default
+  private static int serverPortMax = 6776;			// Server port maximum (serverPortMax - serverPort = max instances of server) 
+  private int serverId;								// Identifier for one server
+  private DatagramSocket ds;						// Entry point
     
   public static void main(String[] args) {
 	  if(serverPort < serverPortMax) {
@@ -52,7 +53,7 @@ public class UDPServer {
 	  
 	  // only if instantiation of DatagramSocket was a success
 	  if(ds instanceof DatagramSocket) {
-		  byte[] buffer = new byte[MAX_SIZE];
+		  byte[] buffer = new byte[MAX_OBJECT_SIZE];
 		  
 		  log("Listening on UDP Port " + serverId + " ...");
 		  
@@ -62,25 +63,24 @@ public class UDPServer {
 	    	  try {
 	    		  // receiving (blocking)
 	    		  ds.receive(dp);
-	    		  
-	    		  int len = dp.getLength();
-	    		  byte[] b = new byte[len];
-	    		  for(int i=0 ; i<len ; i++) {
-	    			  b[i] = buffer[i];
-	    		  }
-	    		  	    		  
-	    		  ByteArrayInputStream baos = new ByteArrayInputStream(b);
+	    		  	    		  	    
+	    		  // de-serialization
+	    		  ByteArrayInputStream baos = new ByteArrayInputStream(buffer);
 	    	      ObjectInputStream oos = new ObjectInputStream(baos);
 	    	      try {
-	    	    	  MyMessage m = (MyMessage)oos.readObject();
-	    	    	  log(dp, m.getMsg());
+	    	    	  Object o = oos.readObject();
+	    	    	  
+	    	    	  if(o instanceof MyMessage) {
+	    	    		  MyMessage m = (MyMessage)o;
+	    	    		  log(dp, m.getMsgNumber() + " : " + m.getMsg());
+	    	    	  }else {
+	    	    		  log(dp, "Unknow object !");
+	    	    	  }
+
 	    	      } catch (ClassNotFoundException e) {
-	    	    	  // TODO Auto-generated catch block
 	    	    	  e.printStackTrace();
 	    	      }
 	    		    
-	    	   
-	    		  
 	    		  /*
 	    		  // Cast buffer in String
 	    		  String msg = new String( buffer, 0, dp.getLength());
