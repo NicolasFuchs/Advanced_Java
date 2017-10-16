@@ -34,6 +34,11 @@ public class TCPServerThread extends Thread {
     		}else if (o instanceof MyMessage){
     			MyMessage m = (MyMessage)o;
     			ts.log(so, id, "MsgNum= " + m.getMsgNumber() + ", Msg= " + m.getMsg() );
+    			
+    			if(m.getMsg().equals("BREAK")){ // to solve P4
+    				ts.log(so,id,"Socket closed");
+    				so.close();
+    			}
     		}else{
     			ts.log(so, id, "Unknown received Object !");
     		}
