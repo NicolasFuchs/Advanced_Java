@@ -38,6 +38,7 @@ public class TCPServer {
   private void createAndLaunch() {
 	  try {
 		  ss = new ServerSocket(serverId);
+		  //ss.setReceiveBufferSize(1);
 	  } catch (IOException e) {
 		  if(serverPort < serverPortMax) {
 			  log("Création du serveur sur port ("+serverId+") impossible, tentative sur port ("+(serverPort)+")");
