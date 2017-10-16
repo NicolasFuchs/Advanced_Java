@@ -20,7 +20,7 @@ public class TCPClientGUI extends Frame implements ActionListener {
 
     final static String VERSION      = "v1.17";
     final static int    SERVERPORT   = 7676;
-    final static String DEFAULT_HOST = "127.0.0.1";
+    final static String DEFAULT_HOST = "160.98.117.114";
     final static String EXIT         = "Exit";
     final static String CONNECT      = "Connect";
     final static String DISCONNECT   = "Disconnect";
