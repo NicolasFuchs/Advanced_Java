@@ -76,6 +76,7 @@ public class TCPClientGUI extends Frame implements ActionListener {
         msgField.setBounds(80, 100, 310, 30);
         msgField.setEditable(false);
         msgField.addKeyListener(new KeyAdapter() {
+            @Override
             public void keyPressed(KeyEvent e) {
                 int key = e.getKeyCode();
                 if (key == KeyEvent.VK_ENTER) {
@@ -111,6 +112,7 @@ public class TCPClientGUI extends Frame implements ActionListener {
 
         // call exitGUI() when closing frame
         addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent evt) {
                 exitGUI();
             }
@@ -120,6 +122,7 @@ public class TCPClientGUI extends Frame implements ActionListener {
     // -----------------------------------------------------------------
     // Handling GUI actions
     // -----------------------------------------------------------------
+    @Override
     public void actionPerformed(ActionEvent ae) {
 
         String cmd = ae.getActionCommand();

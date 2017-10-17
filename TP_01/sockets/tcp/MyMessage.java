@@ -24,7 +24,7 @@ public class MyMessage implements Serializable {
 	private static int compteur = 0;
 	private String msg;
 	private int msgNum;
-	private int Numero = 65535;
+	//private int Numero = 65535;
 	
 	private final Lock mutex = new ReentrantLock(true);
 	
