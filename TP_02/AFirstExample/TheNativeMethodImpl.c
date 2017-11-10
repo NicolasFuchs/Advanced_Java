@@ -6,8 +6,10 @@
 #include <stdio.h>
 #include "AClassWithNativeMethods.h"
 
-JNIEXPORT void JNICALL Java_AClassWithNativeMethods_theNativeMethod
-	(JNIEnv* env, jobject thisObj) 	{
- 	    printf("Hi folks, welcome to the secret world of JNI !\n");
+JNIEXPORT void JNICALL Java_AClassWithNativeMethods_theNativeMethod(JNIEnv* env, jobject thisObj, jstring str) 	{
+	const char* c_str = (*env)->GetStringUTFChars(env, str, NULL);
+	printf("Hi folks, welcome to the secret world of JNI !\n");
+	printf("%s\n", c_str);
+	(*env)->ReleaseStringUTFChars(env, str, c_str);
 }
 

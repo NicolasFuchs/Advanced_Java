@@ -9,10 +9,9 @@
  */
 public class AClassWithNativeMethods {
     
-	public native void theNativeMethod();
+	public native void theNativeMethod(String str);
 	
  	public void aJavaMethod() {
- 	    theNativeMethod(); // the native method
+ 	    theNativeMethod("Test with string parameter"); // the native method
 	}
 }
-

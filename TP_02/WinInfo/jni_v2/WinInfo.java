@@ -10,6 +10,8 @@
 // Design your C code in order to make use of
 // this class as efficiently as possible
 
+package osinfo;
+
 public class WinInfo {
 
   String type    = "";
@@ -24,7 +26,7 @@ public class WinInfo {
     this.edition = edition;
     this.sp = sp;
   }
-
+  
   @Override
   public String toString() {
     return type + edition + sp + " (build " + build + ")"

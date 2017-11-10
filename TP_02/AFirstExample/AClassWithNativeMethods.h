@@ -10,10 +10,10 @@ extern "C" {
 /*
  * Class:     AClassWithNativeMethods
  * Method:    theNativeMethod
- * Signature: ()V
+ * Signature: (Ljava/lang/String;)V
  */
 JNIEXPORT void JNICALL Java_AClassWithNativeMethods_theNativeMethod
-  (JNIEnv *, jobject);
+  (JNIEnv *, jobject, jstring);
 
 #ifdef __cplusplus
 }
