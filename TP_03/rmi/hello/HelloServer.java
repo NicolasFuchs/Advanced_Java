@@ -11,7 +11,7 @@ public class HelloServer extends UnicastRemoteObject implements Hello {
 
     public String sayHello() throws RemoteException {
         System.out.println("- saying hello to all that ask ...");
-        return "Hi Buddy!!";
+        return "Hi Buddy!!!";
     }
 
     public static void main(String args[]) {
