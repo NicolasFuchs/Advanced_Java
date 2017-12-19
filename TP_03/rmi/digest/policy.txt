@@ -1,4 +1,13 @@
-grant {
+//grant {
 	// WARNING: for testing purposes only we allow everything
-	permission java.security.AllPermission;
+//	permission java.security.AllPermission;
+//};
+
+grant {
+  permission java.net.SocketPermission
+  "160.98.31.52:1099","connect";
+  permission java.net.SocketPermission
+  "160.98.31.52:58634","connect";
+  permission java.net.SocketPermission
+  "rudolf.scheurer.home.hefr.ch:80","connect,resolve";
 };

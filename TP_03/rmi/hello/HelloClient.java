@@ -20,8 +20,7 @@ public class HelloClient {
 
             System.out.println("Invoking remote method ...");
             String message = obj.sayHello();
-            System.out.println("Remote method returned '" + message
-                    + "' and completed successfully.\n");
+            System.out.println("Remote method returned '" + message + "' and completed successfully.\n");
 
         } catch (Exception e) {
             System.out.println("HelloClient exception: " + e.getMessage());

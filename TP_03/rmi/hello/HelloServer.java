@@ -12,6 +12,7 @@ public class HelloServer extends UnicastRemoteObject implements Hello {
         super();
     }
 
+    @Override
     public String sayHello() throws RemoteException {
         System.out.println("- saying hello to all that ask ...");
         return "Hi Buddy!!";
